@@ -62,4 +62,10 @@ class Core
 
         return $str;
     }
+
+    public function add_slashes($array) {
+        return array_map(function($str) {
+            return "'$str'";
+        }, $array);
+    }
 }

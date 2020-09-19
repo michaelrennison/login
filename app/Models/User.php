@@ -8,36 +8,42 @@ namespace App\Models;
 
 class User extends Model
 {
+    /* @var $id integer */
+    protected $id;
+
     /* @var $fname String */
     public $fname;
 
     /* @var $lname String */
-    public  $lname;
+    public $lname;
 
     /* @var $email String */
-    protected $email;
+    public $email;
 
     /* @var $password String */
-    private $password;
+    protected $password;
+
+    /* @var $tableName String */
+    protected $tableName = 'users';
 
     /**
-     * User constructor.
-     * @param $email
-     * @param $password
+     * Encrypt the password when it is assigned
+     * @param String $password
      */
-    public function __construct($email, $password)
+    public function setPassword($password)
     {
-        parent::__construct();
-        $this->email = $email;
-        $this->password = $this->encrypt_password($password);
+        $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
 
     /**
-     * Function to encrypt the inputted password
-     * @param $password
-     * @return false|string|null
+     * @param String $email
      */
-    private function encrypt_password($password) {
-        return password_hash($password, PASSWORD_DEFAULT);
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    public function authenticate($password) {
+        return password_verify($password, $this->password);
     }
 }
