@@ -1,5 +1,3 @@
-# untitled
-
 ## Project setup
 ```
 npm install
