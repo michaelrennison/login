@@ -23,6 +23,7 @@ export default {
     }
   },
   mounted() {
+    // get the user from the route props
     this.user = this.$route.params.user
   },
 
@@ -30,16 +31,20 @@ export default {
     logout() {
       const url = `${this.$root.config.serverUrl}/logout.php`;
 
+      // define the users token as the post data
       const postData = {
         token: this.user.token
       }
 
+      // make a post request to the server using the post data
       axios({
         method: 'post',
         url: url,
         data: postData
       }, {withCredentials: true}).then(() => {
+          // remove the user from the local storage
           localStorage.removeItem('user');
+          // navigate back to the login screen
           this.$router.push('./login')
       }).catch((err) => {
         this.$root.error = err;

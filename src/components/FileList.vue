@@ -29,6 +29,7 @@ export default {
   },
 
   mounted() {
+    // get the files belonging to this user
     this.getFiles()
   },
 
@@ -37,15 +38,18 @@ export default {
 
       const url = `${this.$root.config.serverUrl}/get_files.php`;
 
+      // create postData to send the server the users token
       const postData = {
         token: this.user.token
       }
 
+      // create a post request to the server
       axios({
         method: 'post',
         url: url,
         data: postData
       }, {withCredentials: true}).then((resp) => {
+        // save the returned files to the file list
         this.files = resp.data.files
       }).catch(err => {
         this.$root.error = err;

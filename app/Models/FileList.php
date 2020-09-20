@@ -24,6 +24,10 @@ class FileList extends Model
         $this->populate_file_list();
     }
 
+    /**
+     * Get all of the files belonging to the user and add them to the
+     * files array
+     */
     private function populate_file_list() {
         $rows = $this->get_relationship_by_key('user_id');
         foreach ($rows as $row) {

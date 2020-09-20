@@ -75,15 +75,18 @@ export default {
   },
   methods: {
     validateEmails() {
+      // check if the email field is equal to the confirm email field
       this.emailsMatch = this.email === this.confirmEmail;
     },
 
     validatePasswords() {
+      // check if the password field is equal to the confirm password field
       this.passwordsMatch = this.password === this.confirmPassword;
     },
 
     register() {
 
+      // define the post data as the inputted email, password firstname and lastname
       const postData = {
         fname: this.fname,
         lname: this.lname,
@@ -93,17 +96,21 @@ export default {
 
       const url = `${this.$root.config.serverUrl}/register.php`;
 
+      // make a post request to the register script on the server
       axios({
         method: 'post',
         url: url,
         data: postData
       })
       .then((resp) => {
+        // check if the user was succesfully able to register
         if(resp.data.error === true) {
+          // display the error message to the user
           this.error = resp.data;
         } else {
-          // Navigate to the login page
+          // Save the user data to the local storage
           localStorage.user = JSON.stringify(resp.data);
+          // Navigate to the login page and send the user data as a prop
           this.$router.push({
             name: 'welcome',
             params: {

@@ -99,6 +99,12 @@ class Model
         return $fetch['id'];
     }
 
+
+    /**
+     * function for getting all the values in the relationship table using a specific key e.g. user_id
+     * @param $key
+     * @return mixed
+     */
     public function get_relationship_by_key($key) {
         $value = $this->$key;
         $query = "SELECT * FROM $this->relationship WHERE $key= :$key";
@@ -107,9 +113,12 @@ class Model
         return $smtp->fetchAll();
     }
 
+
+    /**
+     * function for updating values for an entry in the database
+     * @param $values
+     */
     public function update_values($values) {
-        // Get the keys for the table
-        $keys = array_keys($values);
 
         $query = "UPDATE $this->tableName SET ";
 

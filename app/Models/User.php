@@ -64,10 +64,17 @@ class User extends Model
         $this->update_values(['token' => $this->token]);
     }
 
+    /**
+     * function to check if the user is logged in by checking if their token is stored in
+     * the database
+     */
     public function is_logged_in() {
         return $this->find_unique_by_key('token');
     }
 
+    /**
+     * Function to log the user out by setting the stored token to null in the database
+     */
     public function logout() {
         if($this->find_unique_by_key('token') !== false) {
             $this->update_values(['token' => null]);

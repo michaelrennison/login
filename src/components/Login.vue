@@ -21,7 +21,7 @@
           </div>
           <div class="form-group row">
             <div class="col-sm">
-              <button v-on:click="login" class="btn btn-block btn-primary">Login</button>
+              <button :disabled="(email === '' || password ==='')" v-on:click="login" class="btn btn-block btn-primary">Login</button>
             </div>
           </div>
           <router-link to="/register">Register</router-link>
@@ -47,23 +47,28 @@ export default {
     login() {
       const url = `${this.$root.config.serverUrl}/login.php`;
 
+      // define the post data for logging in a user with the inputted email and password
       const postData = {
         email: this.email,
         password: this.password
       }
 
+      // make a post request to the login script using the postdata
       axios({
         method: 'post',
         url: url,
         data: postData
       }, {withCredentials: true})
       .then((resp) => {
+        // check if the user was successfully logged in
         if(resp.data.error === true) {
+          // display the error message
           this.error = resp.data
         } else {
           this.error = false;
           // store the response in local storage
           localStorage.user = JSON.stringify(resp.data);
+          // navigate to the welcome screen and send the user data as a prop
           this.$router.push({
             name: 'welcome',
             params: {

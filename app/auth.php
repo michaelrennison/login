@@ -15,6 +15,7 @@ $token = $request["token"];
 $user = new User();
 $user->token = $token;
 if($user->is_logged_in()) {
+    // return the user object as the response
     echo json_encode($user);
 } else {
     echo 'false';

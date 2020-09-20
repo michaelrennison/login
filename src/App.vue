@@ -37,9 +37,11 @@ export default {
     checkLogin() {
       const url = `${this.$root.config.serverUrl}/auth.php`;
 
+      // create the postData to use to check if the user is logged in
       const postData = {
         token: this.user.token
       }
+      // make a post request to the server using the postData
       axios({
         method: 'post',
         url: url,
@@ -52,6 +54,7 @@ export default {
           // navigate to the login page
           this.$router.push('./login');
         } else {
+          // user is logged in, navigate to the welcome screen
           this.$router.push({
             name: 'welcome',
             params: {

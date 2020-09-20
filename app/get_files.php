@@ -18,5 +18,6 @@ if($user->is_logged_in()) {
     // create a new instance of the file list class
     $fileList = new FileList($user->id);
 
+    // return the file list as a response
     echo json_encode($fileList);
 }

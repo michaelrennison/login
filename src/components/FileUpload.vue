@@ -48,6 +48,7 @@ export default {
   },
   methods: {
     upload() {
+      // create the form data as a new formData object
       let formData = new FormData();
       formData.append("name", this.fileName);
       formData.append("file", this.file);
@@ -55,13 +56,16 @@ export default {
 
       const url = `${this.$root.config.serverUrl}/upload.php`;
 
+      // create a post request to the server script for handling an upload
       axios.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
         withCredentials: true
       }).then(resp => {
+        // tell the parent to update it's file list
         this.$emit('updateFiles', resp.data);
+        // clear the data in the form
         this.clearForm();
       }).catch(err => {
         this.$root.error = err;
@@ -69,10 +73,12 @@ export default {
       })
     },
     previewFile(event) {
+      // get the file details so the name can be displayed before the upload
       this.file = event.target.files[0];
     },
 
     clearForm() {
+      // clear the file details
       this.file = '';
       this.fileName = '';
     }
