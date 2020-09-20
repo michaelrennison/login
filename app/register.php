@@ -20,8 +20,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Save the user model to the DB
     $data = $user->create();
     // Store the users login credentials to the session
-    $_SESSION['loggedin'] = true;
-    $_SESSION['userid'] = $data;
-
-    $user->authenticate($request["password"]);
+    $user->login();
 }

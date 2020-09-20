@@ -13,7 +13,7 @@ Vue.use(RouterView);
 const routes = [
   { path: '/login', name: 'login', component: Login },
   { path: '/register', name: 'register', component: Register },
-  { path: '/', name: 'welcome', component: Welcome}
+  { path: '/welcome', name: 'welcome', component: Welcome, props: true}
 ]
 
 const router = new VueRouter({
@@ -22,7 +22,7 @@ const router = new VueRouter({
 new Vue({
   data: function() {
     return {
-      config
+      config,
     }
   },
   router,

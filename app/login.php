@@ -28,8 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Set the user password and authenticate it
         if($user->authenticate($request["password"]) === true) {
             // Save session data and return the user object
-            $_SESSION['loggedin'] = true;
-            $_SESSION['userid'] = $userId;
+            $user->login();
             $resp = $user;
         } else {
             $resp = [

@@ -56,13 +56,21 @@ export default {
         method: 'post',
         url: url,
         data: postData
-      })
+      }, {withCredentials: true})
       .then((resp) => {
         if(resp.data.error === true) {
           this.error = resp.data
         } else {
           this.error = false;
           console.log(resp.data);
+          // store the response in local storage
+          localStorage.user = JSON.stringify(resp.data);
+          this.$router.push({
+            name: 'welcome',
+            params: {
+              user: resp.data
+            }
+          })
         }
       }).catch(err => {
         console.log(err);

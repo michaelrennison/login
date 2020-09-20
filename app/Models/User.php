@@ -8,9 +8,6 @@ namespace App\Models;
 
 class User extends Model
 {
-    /* @var $id integer */
-    protected $id;
-
     /* @var $fname String */
     public $fname;
 
@@ -26,6 +23,8 @@ class User extends Model
     /* @var $tableName String */
     protected $tableName = 'users';
 
+    /* @var $token String */
+    public $token;
     /**
      * Encrypt the password when it is assigned
      * @param String $password
@@ -45,5 +44,31 @@ class User extends Model
 
     public function authenticate($password) {
         return password_verify($password, $this->password);
+    }
+
+    /**
+     * function for generating a session token for the user
+     */
+    public function generate_session_token() {
+        $this->token = uniqid(rand(), true);
+    }
+
+    /**
+     * function for logging in the user, this is done by storing their session
+     * in the database
+     */
+    public function login() {
+        $this->generate_session_token();
+        $this->update_values(['token' => $this->token]);
+    }
+
+    public function is_logged_in() {
+        return $this->find_unique_by_key('token');
+    }
+
+    public function logout() {
+        if($this->find_unique_by_key('token') !== false) {
+            $this->update_values(['token' => null]);
+        }
     }
 }

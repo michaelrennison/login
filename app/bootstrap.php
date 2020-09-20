@@ -13,3 +13,5 @@ require 'constants.php';
 require 'Models/Core.php';
 require 'Models/Model.php';
 require 'Models/User.php';
+require 'Models/File.php';
+require 'Models/FileList.php';
