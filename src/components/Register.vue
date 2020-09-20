@@ -2,6 +2,9 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-10 card">
+        <div v-if="error" class="alert alert-danger mt-3" role="alert">
+          {{ error.message }}
+        </div>
         <div class="my-3">
           <div class="form-group row">
             <label for="fname" class="col-sm-4 col-form-label">First Name</label>
@@ -67,6 +70,7 @@ export default {
       confirmPassword: '',
       emailsMatch: false,
       passwordsMatch: false,
+      error: false
     }
   },
   methods: {
@@ -96,6 +100,18 @@ export default {
       })
       .then((resp) => {
         console.log(resp);
+        if(resp.data.error === true) {
+          this.error = resp.data;
+        } else {
+          // Navigate to the login page
+          localStorage.user = JSON.stringify(resp.data);
+          this.$router.push({
+            name: 'welcome',
+            params: {
+              user: resp.data
+            }
+          })
+        }
       }).catch(err => {
         console.log(err);
       })

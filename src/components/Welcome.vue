@@ -39,6 +39,7 @@ export default {
         url: url,
         data: postData
       }, {withCredentials: true}).then(() => {
+          localStorage.removeItem('user');
           this.$router.push('./login')
       }).catch(() => {
 

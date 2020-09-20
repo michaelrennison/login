@@ -51,7 +51,7 @@ export default {
       let formData = new FormData();
       formData.append("name", this.fileName);
       formData.append("file", this.file);
-      formData.append("userId", this.user.id)
+      formData.append("token", this.user.token)
 
       const url = `${this.$root.config.serverUrl}/upload.php`;
 

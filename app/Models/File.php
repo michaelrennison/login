@@ -9,8 +9,8 @@ class File extends Model
     /* @var $name String */
     public $name;
 
-    /* @var $fileName String */
-    public $fileName;
+    /* @var $file_name String */
+    public $file_name;
 
     /* @var $source String */
     public $source;
@@ -21,11 +21,11 @@ class File extends Model
     /* @var $tableName String */
     protected $tableName = 'files';
 
-    public function __construct($name, $fileName, $source, $userId)
+    public function __construct($name, $file_name, $source, $userId)
     {
         parent::__construct();
         $this->name = $name;
-        $this->fileName = $fileName;
+        $this->file_name = $file_name;
         $this->source = $source;
         $this->user_id = $userId;
     }

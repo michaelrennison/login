@@ -18,7 +18,7 @@ class Model
         'core',
         'db',
         'tableName',
-        'relationship'
+        'relationship',
     ];
     // value for the core model to be used to call global functions
     protected $core;
@@ -43,22 +43,37 @@ class Model
     public function create() {
         // Get the object properties and remove the ones that should not be added to the DB
         $values = $this->remove_non_db_properties(get_object_vars($this));
-
+        // remove ID from the values
+        unset($values['id']);
         // Get the keys for the table
         $keys = array_keys($values);
-
         // Get the key string for the sql insert
         $keyStr = $this->core->concatenate_db_strings($keys);
         // add slashes to the value array
-        $values = $this->core->add_slashes($values);
-        // get the value string for the sql insert
-        $valStr = $this->core->concatenate_db_strings($values);
-        // insert the values into the database
-        $insStr = "INSERT INTO $this->tableName $keyStr VALUES $valStr";
-        // Insert the values into the db
-        $this->core->db->query($insStr);
+        // $values = $this->core->add_slashes($values);
+        // Begin making the SQL insert statement
+        $insStr = "INSERT INTO $this->tableName $keyStr VALUES (";
+        // Loop through the keys to bind them to the insert string;
+        foreach ($keys as $index => $key) {
+            // Check if this is the last element in the array
+            reset($keys);
+            end($keys);
+            if ($index === key($keys)) {
+                $insStr .= " :$key";
+            } else {
+                $insStr .= " :$key, ";
+            }
+        }
+        // Close the values bing binded
+        $insStr .= ")";
+        // prepare the database query
+        $stmt  = $this->core->db->prepare($insStr);
+        // Execute the query and bind the values to their key
+        $stmt->execute($values);
         // Return the ID from the inserted user
-        return $this->core->db->lastInsertId();
+        // set the objects ID
+        $this->id = $this->core->db->lastInsertId();
+        return $this->id;
     }
 
     /**
@@ -69,8 +84,10 @@ class Model
     public function find_unique_by_key($key) {
         // get the value for this object key
         $value = $this->$key;
-        $query = "SELECT * FROM $this->tableName WHERE $key='$value' ORDER BY id DESC LIMIT 1";
-        $smtp = $this->core->db->query($query);
+        $query = "SELECT * FROM $this->tableName WHERE $key= :$key ORDER BY id DESC LIMIT 1";
+        $smtp = $this->core->db->prepare($query);
+
+        $smtp->execute([$key => $value]);
         $fetch = $smtp->fetch();
         // return false if no rows are found
         if($fetch === false) {
@@ -84,8 +101,10 @@ class Model
 
     public function get_relationship_by_key($key) {
         $value = $this->$key;
-        $query = "SELECT * FROM $this->relationship WHERE $key='$value'";
-        return $this->core->db->query($query)->fetchAll();
+        $query = "SELECT * FROM $this->relationship WHERE $key= :$key";
+        $smtp = $this->core->db->prepare($query);
+        $smtp->execute([$key => $value]);
+        return $smtp->fetchAll();
     }
 
     public function update_values($values) {
@@ -99,15 +118,17 @@ class Model
             reset($values);
             end($values);
             if ($key === key($values)) {
-                $query .= "$key='$value'";
+                $query .= "$key = :$key";
             } else {
-                $query .= "$key='$value',";
+                $query .= "$key = :$key,";
             }
         }
 
-        $query .= "WHERE id=$this->id";
-        // run the query
-        $this->core->db->query($query);
+        $query .= " WHERE id=$this->id";
+
+        $smtp = $this->core->db->prepare($query);
+        // Execute the query
+        $smtp->execute($values);
     }
     /**
      * function for striping non database properties when creating an entry

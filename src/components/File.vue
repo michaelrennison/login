@@ -1,7 +1,10 @@
 <template>
-  <div>
-    <a :href="file.source" target="_blank">{{ file.name }}</a>
-  </div>
+  <tr>
+    <td>{{ file.name }}</td>
+    <td>
+      <a class="btn btn-primary" :href="`${this.$root.config.serverUrl}/${file.source}`" target="_blank">view</a>
+    </td>
+  </tr>
 </template>
 
 <script>

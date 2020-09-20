@@ -4,11 +4,15 @@
  */
 
 use App\Models\File;
+use App\Models\User;
 
 require 'bootstrap.php';
-// check if user is logged in
-// Only process data if the server request method is POST
-if($_COOKIE['loggedin'] && $_SERVER['REQUEST_METHOD'] === 'POST') {
+// get the users token from the request
+$token = $_POST["token"];
+// Create a new user object and check if they are logged in using the token
+$user = new User();
+$user->token = $token;
+if($user->is_logged_in()) {
     // generate a unique filename
     $filename = uniqid(rand(), true);
     $ext = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
@@ -18,7 +22,7 @@ if($_COOKIE['loggedin'] && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $_POST["name"],
         $_FILES["file"]["name"],
         $uploadTarget,
-        $_POST["userId"]
+        $user->id
     );
 
     // Save the file to the server
@@ -27,4 +31,5 @@ if($_COOKIE['loggedin'] && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $file->create();
 
     echo json_encode($file);
+} else {
 }

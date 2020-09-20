@@ -42,6 +42,8 @@ class User extends Model
         $this->email = $email;
     }
 
+
+
     public function authenticate($password) {
         return password_verify($password, $this->password);
     }

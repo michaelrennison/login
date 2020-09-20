@@ -30,7 +30,7 @@ class FileList extends Model
 
             $file = new File(
                 $row['name'],
-                $row['fileName'],
+                $row['file_name'],
                 $row['source'],
                 $this->user_id
             );

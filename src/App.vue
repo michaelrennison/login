@@ -18,8 +18,10 @@ export default {
     // Check if the user is logged in
     if(localStorage.user) {
       this.user = JSON.parse(localStorage.user);
+      this.checkLogin();
+    } else {
+      this.$router.push('./login')
     }
-    this.checkLogin();
   },
 
   data: function () {

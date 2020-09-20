@@ -1,8 +1,12 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-6" v-for="file in files" v-bind:key="file.id">
-        <file :file="file" />
+  <div class="container-fluid mt-3" v-if="files.length > 0">
+    <div class="row justify-content-center">
+      <div class="col-10 card">
+        <table class="table table-striped mt-3">
+          <tbody>
+          <file v-for="file in files" v-bind:key="file.id" :file="file" />
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -49,7 +53,12 @@ export default {
     },
 
     updateFiles(file) {
-      this.files.push(file);
+      // Check if the file array is defined, if not create it as a new array with the file in it
+      if(typeof this.files === 'undefined') {
+        this.files = [file];
+      } else {
+        this.files.push(file);
+      }
     }
   }
 }
