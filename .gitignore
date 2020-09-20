@@ -2,7 +2,6 @@
 node_modules
 /dist
 /app/constants.php
-/app/uploads/*
 # local env files
 .env.local
 .env.*.local
