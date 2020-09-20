@@ -41,8 +41,8 @@ export default {
       }, {withCredentials: true}).then(() => {
           localStorage.removeItem('user');
           this.$router.push('./login')
-      }).catch(() => {
-
+      }).catch((err) => {
+        this.$root.error = err;
       });
     },
     updateFiles(file) {

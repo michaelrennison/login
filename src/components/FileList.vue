@@ -48,7 +48,7 @@ export default {
       }, {withCredentials: true}).then((resp) => {
         this.files = resp.data.files
       }).catch(err => {
-        console.log(err)
+        this.$root.error = err;
       });
     },
 

@@ -23,6 +23,7 @@ new Vue({
   data: function() {
     return {
       config,
+      globalError: false,
     }
   },
   router,

@@ -64,7 +64,7 @@ export default {
         this.$emit('updateFiles', resp.data);
         this.clearForm();
       }).catch(err => {
-        console.log(err);
+        this.$root.error = err;
         this.clearForm();
       })
     },

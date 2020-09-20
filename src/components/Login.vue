@@ -62,7 +62,6 @@ export default {
           this.error = resp.data
         } else {
           this.error = false;
-          console.log(resp.data);
           // store the response in local storage
           localStorage.user = JSON.stringify(resp.data);
           this.$router.push({
@@ -73,7 +72,7 @@ export default {
           })
         }
       }).catch(err => {
-        console.log(err);
+        this.$root.error = err;
       })
     }
   }

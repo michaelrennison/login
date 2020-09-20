@@ -99,7 +99,6 @@ export default {
         data: postData
       })
       .then((resp) => {
-        console.log(resp);
         if(resp.data.error === true) {
           this.error = resp.data;
         } else {
@@ -113,7 +112,7 @@ export default {
           })
         }
       }).catch(err => {
-        console.log(err);
+        this.$root.error = err;
       })
     }
   }

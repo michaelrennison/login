@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <div class="container">
+    <div v-if="$root.error" class="alert alert-danger mt-3" role="alert">
+      {{ error.message }}
+    </div>
+    <div v-else class="container">
       <div class="row justify-content-center">
         <router-view></router-view>
       </div>
@@ -57,7 +60,7 @@ export default {
           })
         }
       }).catch(err => {
-        console.log(err);
+        this.$root.error = err;
       })
     }
   }
